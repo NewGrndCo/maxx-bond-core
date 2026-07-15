@@ -77,21 +77,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Maxx Bond V2" },
-      { name: "description", content: "Maxx Bond V2" },
+      { title: "Maxx Bond — Terrence Moore" },
+      {
+        name: "description",
+        content:
+          "Maxx Bond — Terrence Moore. Stream the album, shop official merchandise, and see upcoming tour dates.",
+      },
       { name: "author", content: "Maxx Bond" },
-      { property: "og:title", content: "Maxx Bond V2" },
-      { property: "og:description", content: "Maxx Bond V2" },
+      { property: "og:title", content: "Maxx Bond — Terrence Moore" },
+      {
+        property: "og:description",
+        content:
+          "Stream the album, shop official merchandise, and see upcoming tour dates.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
   shellComponent: RootShell,
