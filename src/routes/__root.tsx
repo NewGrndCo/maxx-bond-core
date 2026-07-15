@@ -77,22 +77,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Maxx Bond — Terrence Moore" },
+      { title: "Maxx Bond — Terrence Moore Album" },
       {
         name: "description",
         content:
           "Maxx Bond — Terrence Moore. Stream the album, shop official merchandise, and see upcoming tour dates.",
       },
       { name: "author", content: "Maxx Bond" },
-      { property: "og:title", content: "Maxx Bond — Terrence Moore" },
+      { property: "og:title", content: "Maxx Bond — Terrence Moore Album" },
       {
         property: "og:description",
         content:
-          "Stream the album, shop official merchandise, and see upcoming tour dates.",
+          "Maxx Bond — Terrence Moore. Stream the album, shop official merchandise, and see upcoming tour dates.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Maxx Bond — Terrence Moore Album" },
+      { name: "twitter:description", content: "Maxx Bond — Terrence Moore. Stream the album, shop official merchandise, and see upcoming tour dates." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9e81fb62-3355-4526-b98c-bec40e087c0c/id-preview-2323b23a--b4dd7bc8-3df2-4264-937e-d71f0624b84c.lovable.app-1784118603614.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9e81fb62-3355-4526-b98c-bec40e087c0c/id-preview-2323b23a--b4dd7bc8-3df2-4264-937e-d71f0624b84c.lovable.app-1784118603614.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
