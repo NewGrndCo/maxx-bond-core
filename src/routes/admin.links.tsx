@@ -1,0 +1,6 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { ComingSoon } from "@/components/admin/coming-soon";
+
+export const Route = createFileRoute("/admin/links")({
+  component: () => <ComingSoon title="Links" description="Manage streaming and social links." />,
+});
