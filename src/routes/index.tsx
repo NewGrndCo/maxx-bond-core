@@ -1,9 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
+
 
 type NavId = "home" | "music" | "merch" | "tour" | "gallery" | "about";
 
@@ -113,9 +114,10 @@ function Index() {
     <div ref={rootRef}>
       <div className="noise" aria-hidden="true" />
       <header className="site-header">
-        <a className="wordmark" href="#home" aria-label="Maxx Bond home">
+        <Link className="wordmark" to="/admin" aria-label="Admin dashboard">
           MAXX BOND
-        </a>
+        </Link>
+
         <nav
           className={`desktop-nav${navOpen ? " open" : ""}`}
           aria-label="Main navigation"
