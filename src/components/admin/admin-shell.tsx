@@ -16,7 +16,14 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 
-const NAV = [
+type NavItem = {
+  to: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  exact?: boolean;
+};
+
+const NAV: NavItem[] = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/admin/artist", label: "Artist Profile", icon: User },
   { to: "/admin/music", label: "Music", icon: Music },
@@ -27,7 +34,8 @@ const NAV = [
   { to: "/admin/links", label: "Links", icon: Link2 },
   { to: "/admin/legal", label: "Legal", icon: FileText },
   { to: "/admin/settings", label: "Settings", icon: Settings },
-] as const;
+];
+
 
 export function AdminShell({
   email,
