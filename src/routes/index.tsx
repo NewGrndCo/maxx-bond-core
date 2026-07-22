@@ -274,7 +274,7 @@ function Index() {
       about: (
         <section key="about" id="about" className="about section-shell reveal">
           <div
-            className="sprite portrait"
+            className={profile?.portrait_url ? "portrait managed-image" : "sprite portrait"}
             style={asset(profile?.portrait_url)}
             role="img"
             aria-label={`Portrait of ${profile?.artist_name || "Maxx Bond"}`}
