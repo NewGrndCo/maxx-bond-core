@@ -158,14 +158,18 @@ function Index() {
             <div className="vinyl" style={{ animationPlayState: playing ? "running" : "paused" }}>
               <span />
             </div>
-            <div
-              className="sprite hero-art"
-              style={asset(
-                activeTrack?.cover_url || profile?.album_cover_url || profile?.hero_artwork_url,
-              )}
-              role="img"
-              aria-label="Featured album artwork"
-            />
+            {(() => {
+              const heroUrl =
+                activeTrack?.cover_url || profile?.album_cover_url || profile?.hero_artwork_url;
+              return (
+                <div
+                  className={heroUrl ? "hero-art managed-image" : "sprite hero-art"}
+                  style={asset(heroUrl)}
+                  role="img"
+                  aria-label="Featured album artwork"
+                />
+              );
+            })()}
           </div>
           <div className="hero-copy reveal">
             <p className="eyebrow">Featured music</p>
