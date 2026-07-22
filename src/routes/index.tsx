@@ -179,10 +179,15 @@ function Index() {
             </h1>
             <h2>{activeTrack?.artist || profile?.artist_name || "Maxx Bond"}</h2>
             <div id="music" className="player glass" aria-label="Music player">
-              <div
-                className="sprite player-cover"
-                style={asset(activeTrack?.cover_url || profile?.album_cover_url)}
-              />
+              {(() => {
+                const coverUrl = activeTrack?.cover_url || profile?.album_cover_url;
+                return (
+                  <div
+                    className={coverUrl ? "player-cover managed-image" : "sprite player-cover"}
+                    style={asset(coverUrl)}
+                  />
+                );
+              })()}
               <div className="track-info">
                 <strong>{activeTrack?.title || "Upload music in Admin"}</strong>
                 <span>{activeTrack?.artist || profile?.artist_name || "Maxx Bond"}</span>
