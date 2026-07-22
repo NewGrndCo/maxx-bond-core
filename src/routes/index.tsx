@@ -158,14 +158,18 @@ function Index() {
             <div className="vinyl" style={{ animationPlayState: playing ? "running" : "paused" }}>
               <span />
             </div>
-            <div
-              className="sprite hero-art"
-              style={asset(
-                activeTrack?.cover_url || profile?.album_cover_url || profile?.hero_artwork_url,
-              )}
-              role="img"
-              aria-label="Featured album artwork"
-            />
+            {(() => {
+              const heroUrl =
+                activeTrack?.cover_url || profile?.album_cover_url || profile?.hero_artwork_url;
+              return (
+                <div
+                  className={heroUrl ? "hero-art managed-image" : "sprite hero-art"}
+                  style={asset(heroUrl)}
+                  role="img"
+                  aria-label="Featured album artwork"
+                />
+              );
+            })()}
           </div>
           <div className="hero-copy reveal">
             <p className="eyebrow">Featured music</p>
@@ -175,10 +179,15 @@ function Index() {
             </h1>
             <h2>{activeTrack?.artist || profile?.artist_name || "Maxx Bond"}</h2>
             <div id="music" className="player glass" aria-label="Music player">
-              <div
-                className="sprite player-cover"
-                style={asset(activeTrack?.cover_url || profile?.album_cover_url)}
-              />
+              {(() => {
+                const coverUrl = activeTrack?.cover_url || profile?.album_cover_url;
+                return (
+                  <div
+                    className={coverUrl ? "player-cover managed-image" : "sprite player-cover"}
+                    style={asset(coverUrl)}
+                  />
+                );
+              })()}
               <div className="track-info">
                 <strong>{activeTrack?.title || "Upload music in Admin"}</strong>
                 <span>{activeTrack?.artist || profile?.artist_name || "Maxx Bond"}</span>
@@ -265,7 +274,7 @@ function Index() {
       about: (
         <section key="about" id="about" className="about section-shell reveal">
           <div
-            className="sprite portrait"
+            className={profile?.portrait_url ? "portrait managed-image" : "sprite portrait"}
             style={asset(profile?.portrait_url)}
             role="img"
             aria-label={`Portrait of ${profile?.artist_name || "Maxx Bond"}`}
@@ -520,10 +529,15 @@ function Index() {
           </header>
           <div className="modal-content">
             <div className="modal-album">
-              <div
-                className="sprite modal-cover"
-                style={asset(activeTrack?.cover_url || profile?.album_cover_url)}
-              />
+              {(() => {
+                const mUrl = activeTrack?.cover_url || profile?.album_cover_url;
+                return (
+                  <div
+                    className={mUrl ? "modal-cover managed-image" : "sprite modal-cover"}
+                    style={asset(mUrl)}
+                  />
+                );
+              })()}
               <p>
                 Thank you for supporting real music.
                 <br />
