@@ -529,10 +529,15 @@ function Index() {
           </header>
           <div className="modal-content">
             <div className="modal-album">
-              <div
-                className="sprite modal-cover"
-                style={asset(activeTrack?.cover_url || profile?.album_cover_url)}
-              />
+              {(() => {
+                const mUrl = activeTrack?.cover_url || profile?.album_cover_url;
+                return (
+                  <div
+                    className={mUrl ? "modal-cover managed-image" : "sprite modal-cover"}
+                    style={asset(mUrl)}
+                  />
+                );
+              })()}
               <p>
                 Thank you for supporting real music.
                 <br />
