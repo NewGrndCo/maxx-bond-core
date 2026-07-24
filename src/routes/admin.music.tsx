@@ -218,11 +218,11 @@ function MusicPage() {
               </span>
             </label>
           </div>
-          {edit.audio_url && <audio className="w-full" controls src={edit.audio_url} />}
+          {edit.audio_url && <SignedAudio url={edit.audio_url} className="w-full" />}
           {edit.cover_url && (
-            <img
+            <SignedImage
+              url={edit.cover_url}
               className="h-32 w-32 rounded object-cover"
-              src={edit.cover_url}
               alt="Cover preview"
             />
           )}
@@ -254,7 +254,7 @@ function MusicPage() {
             <ManagerCard key={track.id}>
               <div className="flex flex-wrap items-center gap-4">
                 {track.cover_url ? (
-                  <img src={track.cover_url} alt="" className="h-16 w-16 rounded object-cover" />
+                  <SignedImage url={track.cover_url} alt="" className="h-16 w-16 rounded object-cover" />
                 ) : (
                   <div className="h-16 w-16 rounded bg-white/5" />
                 )}
@@ -266,7 +266,7 @@ function MusicPage() {
                   </div>
                 </div>
                 {track.audio_url && (
-                  <audio controls preload="none" src={track.audio_url} className="h-10 max-w-xs" />
+                  <SignedAudio url={track.audio_url} className="h-10 max-w-xs" preload="none" />
                 )}
                 <Button variant="outline" onClick={() => setDraft(track)}>
                   Edit
