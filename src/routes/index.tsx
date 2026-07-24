@@ -264,7 +264,8 @@ function Index() {
               src={activeTrack?.audio_url ?? undefined}
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
-              onEnded={() => changeTrack(1)}
+              onEnded={() => changeTrack(1, true)}
+              onError={() => setPlaying(false)}
               onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
               onLoadedMetadata={(e) => setDuration(e.currentTarget.duration || 0)}
             />
