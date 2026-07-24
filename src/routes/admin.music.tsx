@@ -471,3 +471,15 @@ function BulkAlbumUploader({
     </ManagerCard>
   );
 }
+
+function SignedAudio({ url, className, preload }: { url: string; className?: string; preload?: "auto" | "metadata" | "none" }) {
+  const signed = useSignedUrl(url);
+  if (!signed) return null;
+  return <audio controls src={signed} className={className} preload={preload} />;
+}
+
+function SignedImage({ url, alt, className }: { url: string; alt: string; className?: string }) {
+  const signed = useSignedUrl(url);
+  if (!signed) return <div className={className} />;
+  return <img src={signed} alt={alt} className={className} />;
+}
