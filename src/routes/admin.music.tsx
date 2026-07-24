@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useSignedUrl } from "@/hooks/use-signed-url";
 import {
   DeleteButton,
   ManagerCard,
@@ -13,6 +14,7 @@ import {
   Visibility,
   uploadPublicFile,
 } from "@/components/admin/manager-ui";
+
 
 export const Route = createFileRoute("/admin/music")({ component: MusicPage });
 type Track = Tables<"tracks">;
