@@ -2,6 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { signStorageUrl, signMany } from "@/lib/storage-url";
+
+
 
 export const Route = createFileRoute("/")({ component: Index });
 
@@ -54,13 +57,21 @@ function Index() {
         supabase.from("site_sections").select("*").order("display_order"),
         supabase.from("legal_documents").select("*").eq("is_published", true),
       ]);
+      const profileData = profile.data
+        ? {
+            ...profile.data,
+            portrait_url: await signStorageUrl(profile.data.portrait_url),
+            hero_artwork_url: await signStorageUrl(profile.data.hero_artwork_url),
+            album_cover_url: await signStorageUrl(profile.data.album_cover_url),
+          }
+        : null;
       return {
-        profile: profile.data,
-        tracks: tracks.data ?? [],
+        profile: profileData,
+        tracks: await signMany(tracks.data ?? [], ["audio_url", "cover_url"]),
         links: links.data ?? [],
-        gallery: gallery.data ?? [],
+        gallery: await signMany(gallery.data ?? [], ["image_url"]),
         events: events.data ?? [],
-        merch: merch.data ?? [],
+        merch: await signMany(merch.data ?? [], ["image_url"]),
         sections: sections.data ?? [],
         legal: legal.data ?? [],
       };
@@ -84,10 +95,19 @@ function Index() {
   const activeTrack = tracks[trackIndex];
   const profile = data?.profile;
 
+  const autoPlayRef = useRef(false);
   useEffect(() => {
-    setPlaying(false);
     setCurrentTime(0);
-    audioRef.current?.load();
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.load();
+    if (autoPlayRef.current) {
+      autoPlayRef.current = false;
+      audio.play().catch((err) => {
+        console.warn("Autoplay blocked:", err);
+        setPlaying(false);
+      });
+    }
   }, [activeTrack?.id]);
   useEffect(() => {
     const open = modalOpen || legalSlug;
@@ -123,14 +143,20 @@ function Index() {
   const togglePlay = async () => {
     const audio = audioRef.current;
     if (!audio || !activeTrack?.audio_url) return;
-    if (audio.paused) {
-      await audio.play();
-    } else {
-      audio.pause();
+    try {
+      if (audio.paused) {
+        await audio.play();
+      } else {
+        audio.pause();
+      }
+    } catch (err) {
+      console.warn("Playback failed:", err);
+      setPlaying(false);
     }
   };
-  const changeTrack = (delta: number) => {
+  const changeTrack = (delta: number, autoPlay = false) => {
     if (!tracks.length) return;
+    autoPlayRef.current = autoPlay;
     setTrackIndex((i) => (i + delta + tracks.length) % tracks.length);
   };
   const sectionConfig = (key: string) =>
@@ -195,7 +221,7 @@ function Index() {
               <button
                 className="player-btn"
                 aria-label="Previous track"
-                onClick={() => changeTrack(-1)}
+                onClick={() => changeTrack(-1, playing)}
               >
                 ◀
               </button>
@@ -206,7 +232,7 @@ function Index() {
               >
                 {playing ? "Ⅱ" : "▶"}
               </button>
-              <button className="player-btn" aria-label="Next track" onClick={() => changeTrack(1)}>
+              <button className="player-btn" aria-label="Next track" onClick={() => changeTrack(1, playing)}>
                 ▶
               </button>
               <button
@@ -238,7 +264,8 @@ function Index() {
               src={activeTrack?.audio_url ?? undefined}
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
-              onEnded={() => changeTrack(1)}
+              onEnded={() => changeTrack(1, true)}
+              onError={() => setPlaying(false)}
               onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
               onLoadedMetadata={(e) => setDuration(e.currentTarget.duration || 0)}
             />
