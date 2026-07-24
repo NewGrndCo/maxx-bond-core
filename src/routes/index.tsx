@@ -95,10 +95,19 @@ function Index() {
   const activeTrack = tracks[trackIndex];
   const profile = data?.profile;
 
+  const autoPlayRef = useRef(false);
   useEffect(() => {
-    setPlaying(false);
     setCurrentTime(0);
-    audioRef.current?.load();
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.load();
+    if (autoPlayRef.current) {
+      autoPlayRef.current = false;
+      audio.play().catch((err) => {
+        console.warn("Autoplay blocked:", err);
+        setPlaying(false);
+      });
+    }
   }, [activeTrack?.id]);
   useEffect(() => {
     const open = modalOpen || legalSlug;
@@ -134,14 +143,20 @@ function Index() {
   const togglePlay = async () => {
     const audio = audioRef.current;
     if (!audio || !activeTrack?.audio_url) return;
-    if (audio.paused) {
-      await audio.play();
-    } else {
-      audio.pause();
+    try {
+      if (audio.paused) {
+        await audio.play();
+      } else {
+        audio.pause();
+      }
+    } catch (err) {
+      console.warn("Playback failed:", err);
+      setPlaying(false);
     }
   };
-  const changeTrack = (delta: number) => {
+  const changeTrack = (delta: number, autoPlay = false) => {
     if (!tracks.length) return;
+    autoPlayRef.current = autoPlay;
     setTrackIndex((i) => (i + delta + tracks.length) % tracks.length);
   };
   const sectionConfig = (key: string) =>
