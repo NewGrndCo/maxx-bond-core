@@ -221,7 +221,7 @@ function Index() {
               <button
                 className="player-btn"
                 aria-label="Previous track"
-                onClick={() => changeTrack(-1)}
+                onClick={() => changeTrack(-1, playing)}
               >
                 ◀
               </button>
@@ -232,7 +232,7 @@ function Index() {
               >
                 {playing ? "Ⅱ" : "▶"}
               </button>
-              <button className="player-btn" aria-label="Next track" onClick={() => changeTrack(1)}>
+              <button className="player-btn" aria-label="Next track" onClick={() => changeTrack(1, playing)}>
                 ▶
               </button>
               <button
