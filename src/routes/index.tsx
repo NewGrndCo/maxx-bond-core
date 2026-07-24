@@ -2,6 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { signStorageUrl, signMany } from "@/lib/storage-url";
+
+
 
 export const Route = createFileRoute("/")({ component: Index });
 
@@ -54,13 +57,21 @@ function Index() {
         supabase.from("site_sections").select("*").order("display_order"),
         supabase.from("legal_documents").select("*").eq("is_published", true),
       ]);
+      const profileData = profile.data
+        ? {
+            ...profile.data,
+            portrait_url: await signStorageUrl(profile.data.portrait_url),
+            hero_artwork_url: await signStorageUrl(profile.data.hero_artwork_url),
+            album_cover_url: await signStorageUrl(profile.data.album_cover_url),
+          }
+        : null;
       return {
-        profile: profile.data,
-        tracks: tracks.data ?? [],
+        profile: profileData,
+        tracks: await signMany(tracks.data ?? [], ["audio_url", "cover_url"]),
         links: links.data ?? [],
-        gallery: gallery.data ?? [],
+        gallery: await signMany(gallery.data ?? [], ["image_url"]),
         events: events.data ?? [],
-        merch: merch.data ?? [],
+        merch: await signMany(merch.data ?? [], ["image_url"]),
         sections: sections.data ?? [],
         legal: legal.data ?? [],
       };
