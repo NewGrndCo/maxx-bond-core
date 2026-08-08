@@ -20,7 +20,7 @@ export function titleFromFilename(filename: string): string {
   let name = filename.replace(/\.[^.]+$/, "");
   name = name.replace(/^\s*\d+\s*[.\-_)]\s*/, "");
   name = name
-    .replace(/[_\-]+/g, " ")
+    .replace(/[_-]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
   if (name === name.toUpperCase()) {
