@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState, type ReactNode } from "react";
+import { Fragment, useRef, useState, type ReactNode } from "react";
 import { useAudioPlayer } from "@/hooks/use-audio-player";
 import { useEscapeKey, useModalLayer } from "@/hooks/use-modal-layer";
 import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
@@ -83,7 +83,7 @@ function Index() {
   const sections = SECTION_KEYS.filter((key) => sectionConfig(key).is_visible)
     .slice()
     .sort((a, b) => sectionConfig(a).display_order - sectionConfig(b).display_order)
-    .map((key) => <div key={key} style={{ display: "contents" }}>{nodes[key]}</div>);
+    .map((key) => <Fragment key={key}>{nodes[key]}</Fragment>);
 
   return (
     <div ref={rootRef}>
