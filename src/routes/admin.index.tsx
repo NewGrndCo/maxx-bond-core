@@ -7,7 +7,15 @@ export const Route = createFileRoute("/admin/")({
   component: Overview,
 });
 
-function StatCard({ title, value, hint }: { title: string; value: string | number; hint?: string }) {
+function StatCard({
+  title,
+  value,
+  hint,
+}: {
+  title: string;
+  value: string | number;
+  hint?: string;
+}) {
   return (
     <Card className="bg-white/[0.03] border-white/10 text-neutral-100">
       <CardHeader className="pb-2">
@@ -35,13 +43,12 @@ function Overview() {
         "streaming_links",
       ] as const;
       const results = await Promise.all(
-        tables.map((t) =>
-          supabase.from(t).select("*", { count: "exact", head: true }),
-        ),
+        tables.map((t) => supabase.from(t).select("*", { count: "exact", head: true })),
       );
-      return Object.fromEntries(
-        tables.map((t, i) => [t, results[i].count ?? 0]),
-      ) as Record<(typeof tables)[number], number>;
+      return Object.fromEntries(tables.map((t, i) => [t, results[i].count ?? 0])) as Record<
+        (typeof tables)[number],
+        number
+      >;
     },
   });
 
@@ -69,11 +76,17 @@ function Overview() {
           <CardTitle>Quick actions</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-2 sm:grid-cols-2">
-          <Link to="/admin/artist" className="rounded-md border border-white/10 p-4 hover:border-amber-300/40 hover:bg-amber-300/5 transition">
+          <Link
+            to="/admin/artist"
+            className="rounded-md border border-white/10 p-4 hover:border-amber-300/40 hover:bg-amber-300/5 transition"
+          >
             <div className="text-amber-200 text-sm font-medium">Edit artist profile</div>
             <div className="text-xs text-neutral-500 mt-1">Name, bio, contact and hero images</div>
           </Link>
-          <Link to="/" className="rounded-md border border-white/10 p-4 hover:border-amber-300/40 hover:bg-amber-300/5 transition">
+          <Link
+            to="/"
+            className="rounded-md border border-white/10 p-4 hover:border-amber-300/40 hover:bg-amber-300/5 transition"
+          >
             <div className="text-amber-200 text-sm font-medium">View public site</div>
             <div className="text-xs text-neutral-500 mt-1">Preview what visitors see</div>
           </Link>

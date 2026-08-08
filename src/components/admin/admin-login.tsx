@@ -82,7 +82,9 @@ export function AdminLogin({
           <div className="absolute inset-x-8 -top-px h-px bg-gradient-to-r from-transparent via-amber-300/40 to-transparent" />
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-neutral-300">Email</Label>
+              <Label htmlFor="email" className="text-neutral-300">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -94,7 +96,9 @@ export function AdminLogin({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-neutral-300">Password</Label>
+              <Label htmlFor="password" className="text-neutral-300">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
