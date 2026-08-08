@@ -21,6 +21,7 @@ const PLATFORMS = [
   "iHeartRadio",
   "Triller",
 ];
+const SOCIAL_PLATFORMS = ["Instagram", "TikTok", "YouTube", "X", "Facebook", "Threads"];
 
 function LinksPage() {
   const qc = useQueryClient();
@@ -76,7 +77,69 @@ function LinksPage() {
           );
         })}
       </div>
+      <SocialLinksManager />
     </div>
+  );
+}
+
+function SocialLinksManager() {
+  const qc = useQueryClient();
+  const { data = [] } = useQuery({
+    queryKey: ["admin-social-links"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("social_links" as never)
+        .select("*")
+        .order("display_order");
+      if (error) throw error;
+      return data as unknown as Array<{
+        id: string;
+        platform: string;
+        url: string;
+        is_visible: boolean;
+        display_order: number;
+      }>;
+    },
+  });
+  const save = async (
+    platform: string,
+    url: string,
+    is_visible: boolean,
+    display_order: number,
+  ) => {
+    const existing = data.find((item) => item.platform === platform);
+    const result = existing
+      ? await supabase
+          .from("social_links" as never)
+          .update({ url, is_visible, display_order } as never)
+          .eq("id", existing.id)
+      : await supabase
+          .from("social_links" as never)
+          .insert({ platform, url, is_visible, display_order } as never);
+    if (result.error) return toast.error(result.error.message);
+    toast.success(`${platform} saved`);
+    await qc.invalidateQueries({ queryKey: ["admin-social-links"] });
+  };
+  return (
+    <section className="space-y-3 pt-8">
+      <ManagerHeader
+        title="Social profiles"
+        description="These links appear under Stay Connected and remain separate from streaming services."
+      />
+      {SOCIAL_PLATFORMS.map((platform, index) => {
+        const row = data.find((item) => item.platform === platform);
+        return (
+          <LinkRow
+            key={`${platform}-${row?.id ?? "new"}`}
+            platform={platform}
+            initialUrl={row?.url ?? ""}
+            initialVisible={row?.is_visible ?? true}
+            order={row?.display_order ?? index}
+            onSave={save}
+          />
+        );
+      })}
+    </section>
   );
 }
 

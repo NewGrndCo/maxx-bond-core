@@ -1,4 +1,7 @@
 import type { EventItem } from "@/lib/site-content";
+import { Link } from "@tanstack/react-router";
+
+type PublicEvent = EventItem & { title?: string; slug?: string; event_time?: string | null };
 
 export function EventsSection({ events }: { events: EventItem[] }) {
   return (
@@ -8,7 +11,7 @@ export function EventsSection({ events }: { events: EventItem[] }) {
       </div>
       <div className="tour-list">
         {events.length ? (
-          events.map((event) => {
+          (events as PublicEvent[]).map((event) => {
             const date = new Date(`${event.event_date}T00:00:00`);
             return (
               <article key={event.id}>
@@ -17,9 +20,17 @@ export function EventsSection({ events }: { events: EventItem[] }) {
                   {String(date.getDate()).padStart(2, "0")}
                 </time>
                 <p>
-                  <strong>{event.city}</strong>
-                  <span>{event.venue}</span>
+                  <strong>{event.title || event.venue}</strong>
+                  <span>
+                    {event.venue} · {event.city}
+                    {event.event_time ? ` · ${event.event_time.slice(0, 5)}` : ""}
+                  </span>
                 </p>
+                {event.slug ? (
+                  <Link className="tour-ticket" to="/events/$slug" params={{ slug: event.slug }}>
+                    Details
+                  </Link>
+                ) : null}
                 {event.ticket_url ? (
                   <a
                     className="tour-ticket"

@@ -11,8 +11,11 @@ export function useAudioPlayer(tracks: Track[]) {
   const [trackIndex, setTrackIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [muted, setMuted] = useState(false);
+  const [volume, setVolume] = useState(1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const autoPlayRef = useRef(false);
+  const initialAutoplayAttempted = useRef(false);
   const activeTrack = tracks[trackIndex];
 
   useEffect(() => {
@@ -20,7 +23,9 @@ export function useAudioPlayer(tracks: Track[]) {
     const audio = audioRef.current;
     if (!audio) return;
     audio.load();
-    if (autoPlayRef.current) {
+    const shouldPlay = autoPlayRef.current || !initialAutoplayAttempted.current;
+    initialAutoplayAttempted.current = true;
+    if (shouldPlay) {
       autoPlayRef.current = false;
       audio.play().catch((err) => {
         console.warn("Autoplay blocked:", err);
@@ -55,6 +60,21 @@ export function useAudioPlayer(tracks: Track[]) {
     setCurrentTime(time);
   }, []);
 
+  const setPlayerVolume = useCallback((next: number) => {
+    const safe = Math.max(0, Math.min(1, next));
+    setVolume(safe);
+    setMuted(safe === 0);
+    if (audioRef.current) audioRef.current.volume = safe;
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    setMuted((current) => {
+      const next = !current;
+      if (audioRef.current) audioRef.current.muted = next;
+      return next;
+    });
+  }, []);
+
   const audioProps = {
     ref: audioRef,
     src: activeTrack?.audio_url ?? undefined,
@@ -68,7 +88,20 @@ export function useAudioPlayer(tracks: Track[]) {
       setDuration(e.currentTarget.duration || 0),
   };
 
-  return { playing, activeTrack, currentTime, duration, togglePlay, changeTrack, seek, audioProps };
+  return {
+    playing,
+    activeTrack,
+    currentTime,
+    duration,
+    muted,
+    volume,
+    togglePlay,
+    changeTrack,
+    seek,
+    setPlayerVolume,
+    toggleMute,
+    audioProps,
+  };
 }
 
 export type AudioPlayer = ReturnType<typeof useAudioPlayer>;

@@ -1,11 +1,5 @@
-import {
-  DEFAULT_ARTIST,
-  DEFAULT_EMAIL,
-  assetStyle,
-  managedClass,
-  streamStyle,
-} from "@/lib/site-constants";
-import type { ArtistProfile, StreamingLink } from "@/lib/site-content";
+import { DEFAULT_ARTIST, DEFAULT_EMAIL, assetStyle, managedClass } from "@/lib/site-constants";
+import type { ArtistProfile, SocialLink } from "@/lib/site-content";
 
 const DEFAULT_BIO =
   "Uniondale raised. World focused. Maxx Bond brings raw storytelling and real-life experiences over hard-hitting production.";
@@ -15,7 +9,7 @@ export function AboutSection({
   links,
 }: {
   profile: ArtistProfile | null | undefined;
-  links: StreamingLink[];
+  links: SocialLink[];
 }) {
   const name = profile?.artist_name || DEFAULT_ARTIST;
   return (
@@ -42,7 +36,7 @@ export function AboutSection({
               rel="noreferrer"
               aria-label={link.platform}
             >
-              {streamStyle(link.platform).glyph}
+              {link.icon || link.platform.slice(0, 1).toUpperCase()}
             </a>
           ))}
           <a href={`mailto:${profile?.management_email || DEFAULT_EMAIL}`} aria-label="Email">

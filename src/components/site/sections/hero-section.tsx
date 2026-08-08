@@ -1,3 +1,4 @@
+import { Heart, Pause, Play, SkipBack, SkipForward, Volume2, VolumeX } from "lucide-react";
 import type { AudioPlayer } from "@/hooks/use-audio-player";
 import { DEFAULT_ARTIST, assetStyle, formatTime, managedClass } from "@/lib/site-constants";
 import type { ArtistProfile } from "@/lib/site-content";
@@ -15,8 +16,20 @@ export function HeroSection({
   onToggleLike: () => void;
   onOpenListen: () => void;
 }) {
-  const { activeTrack, playing, currentTime, duration, togglePlay, changeTrack, seek, audioProps } =
-    player;
+  const {
+    activeTrack,
+    playing,
+    currentTime,
+    duration,
+    muted,
+    volume,
+    togglePlay,
+    changeTrack,
+    seek,
+    setPlayerVolume,
+    toggleMute,
+    audioProps,
+  } = player;
   const heroUrl = activeTrack?.cover_url || profile?.album_cover_url || profile?.hero_artwork_url;
   const coverUrl = activeTrack?.cover_url || profile?.album_cover_url;
   const artist = activeTrack?.artist || profile?.artist_name || DEFAULT_ARTIST;
@@ -42,8 +55,8 @@ export function HeroSection({
       <div className="hero-copy reveal">
         <p className="eyebrow">Featured music</p>
         <h1>
-          <span>{profile?.hero_headline || activeTrack?.title || "Terrence"}</span>
-          <strong>{profile?.hero_subheading || "Moore"}</strong>
+          <span>{profile?.hero_headline || activeTrack?.title || "Featured music"}</span>
+          {profile?.hero_subheading ? <strong>{profile.hero_subheading}</strong> : null}
         </h1>
         <h2>{artist}</h2>
         <div id="music" className="player glass" aria-label="Music player">
@@ -57,21 +70,21 @@ export function HeroSection({
             aria-label="Previous track"
             onClick={() => changeTrack(-1, playing)}
           >
-            ◀
+            <SkipBack />
           </button>
           <button
             className="player-btn play-toggle"
             aria-label={playing ? "Pause" : "Play"}
             onClick={togglePlay}
           >
-            {playing ? "Ⅱ" : "▶"}
+            {playing ? <Pause /> : <Play />}
           </button>
           <button
             className="player-btn"
             aria-label="Next track"
             onClick={() => changeTrack(1, playing)}
           >
-            ▶
+            <SkipForward />
           </button>
           <button
             className={`player-btn favorite${liked ? " liked" : ""}`}
@@ -79,7 +92,7 @@ export function HeroSection({
             aria-pressed={liked}
             onClick={onToggleLike}
           >
-            {liked ? "♥" : "♡"}
+            <Heart fill={liked ? "currentColor" : "none"} />
           </button>
           <span className="current-time">{formatTime(currentTime)}</span>
           <input
@@ -92,6 +105,23 @@ export function HeroSection({
             onChange={(e) => seek(Number(e.target.value))}
           />
           <span>{formatTime(duration)}</span>
+          <button
+            className="player-btn"
+            aria-label={muted ? "Unmute" : "Mute"}
+            onClick={toggleMute}
+          >
+            {muted ? <VolumeX /> : <Volume2 />}
+          </button>
+          <input
+            className="player-volume"
+            aria-label="Volume"
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            value={muted ? 0 : volume}
+            onChange={(e) => setPlayerVolume(Number(e.target.value))}
+          />
         </div>
         <audio {...audioProps} />
         <div className="hero-cta-row">

@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { ManagerCard, ManagerHeader, Visibility } from "@/components/admin/manager-ui";
 
 export const Route = createFileRoute("/admin/sections")({ component: SectionsPage });
-const DEFAULTS = ["hero", "streaming", "about", "gallery", "merch", "events", "newsletter"];
+const DEFAULTS = ["hero", "about", "merch", "events", "newsletter"];
 
 function SectionsPage() {
   const qc = useQueryClient();
