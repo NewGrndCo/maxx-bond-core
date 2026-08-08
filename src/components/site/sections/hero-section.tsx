@@ -41,7 +41,7 @@ export function HeroSection({
         <span>UNIONDALE, LIFE</span>
         <span>CLASS AA</span>
       </div>
-      <div className="hero-art-wrap reveal">
+      <div className="hero-art-wrap">
         <div className="vinyl" style={{ animationPlayState: playing ? "running" : "paused" }}>
           <span />
         </div>
@@ -52,7 +52,7 @@ export function HeroSection({
           aria-label="Featured album artwork"
         />
       </div>
-      <div className="hero-copy reveal">
+      <div className="hero-copy">
         <p className="eyebrow">Featured music</p>
         <h1>
           <span>{profile?.hero_headline || activeTrack?.title || "Featured music"}</span>
