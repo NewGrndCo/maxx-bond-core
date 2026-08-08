@@ -10,10 +10,7 @@ import { Toaster } from "@/components/ui/sonner";
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
   head: () => ({
-    meta: [
-      { title: "Admin — Maxx Bond" },
-      { name: "robots", content: "noindex, nofollow" },
-    ],
+    meta: [{ title: "Admin — Maxx Bond" }, { name: "robots", content: "noindex, nofollow" }],
   }),
 });
 
@@ -33,10 +30,7 @@ function AdminLayout() {
     return (
       <>
         <Toaster theme="dark" />
-        <AdminLogin
-          onboarding={auth.anyAdminExists === false}
-          onAuthed={auth.refresh}
-        />
+        <AdminLogin onboarding={auth.anyAdminExists === false} onAuthed={auth.refresh} />
       </>
     );
   }

@@ -21,7 +21,12 @@ export function EventsSection({ events }: { events: EventItem[] }) {
                   <span>{event.venue}</span>
                 </p>
                 {event.ticket_url ? (
-                  <a className="tour-ticket" href={event.ticket_url} target="_blank" rel="noreferrer">
+                  <a
+                    className="tour-ticket"
+                    href={event.ticket_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Tickets
                   </a>
                 ) : (

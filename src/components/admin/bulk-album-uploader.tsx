@@ -2,7 +2,12 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ManagerCard, TextField, Visibility, uploadPublicFile } from "@/components/admin/manager-ui";
+import {
+  ManagerCard,
+  TextField,
+  Visibility,
+  uploadPublicFile,
+} from "@/components/admin/manager-ui";
 import {
   IMAGE_ACCEPT,
   IMAGE_ERROR,
@@ -108,8 +113,8 @@ export function BulkAlbumUploader({
         <div>
           <h2 className="text-lg font-semibold">Bulk album uploader</h2>
           <p className="text-xs text-neutral-400">
-            Drop the whole album at once. Titles come from the filenames; one shared cover applies to
-            all tracks.
+            Drop the whole album at once. Titles come from the filenames; one shared cover applies
+            to all tracks.
           </p>
         </div>
         {rows.length > 0 && (
@@ -171,7 +176,7 @@ export function BulkAlbumUploader({
                 {row.status === "done"
                   ? "✓"
                   : row.status === "error"
-                    ? row.message ?? "error"
+                    ? (row.message ?? "error")
                     : row.status === "uploading"
                       ? "…"
                       : "pending"}

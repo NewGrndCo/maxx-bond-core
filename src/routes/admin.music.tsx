@@ -56,7 +56,8 @@ function MusicPage() {
 
   const invalidate = () => qc.invalidateQueries({ queryKey: ["admin-tracks"] });
   const edit = draft ?? blank();
-  const set = <K extends keyof Track>(key: K, value: Track[K]) => setDraft({ ...edit, [key]: value });
+  const set = <K extends keyof Track>(key: K, value: Track[K]) =>
+    setDraft({ ...edit, [key]: value });
 
   const save = async (track: Track) => {
     setBusy(true);

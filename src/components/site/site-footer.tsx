@@ -23,7 +23,12 @@ export function SiteFooter({
       <div>
         <span>© {new Date().getFullYear()} The Foreign Life Records</span>
         <span>All rights reserved.</span>
-        <a className="developer-credit" href="https://newgrnd.media" target="_blank" rel="noreferrer">
+        <a
+          className="developer-credit"
+          href="https://newgrnd.media"
+          target="_blank"
+          rel="noreferrer"
+        >
           Website developed by New Ground Solutions
         </a>
       </div>

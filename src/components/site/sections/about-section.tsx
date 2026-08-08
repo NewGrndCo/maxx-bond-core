@@ -1,4 +1,10 @@
-import { DEFAULT_ARTIST, DEFAULT_EMAIL, assetStyle, managedClass, streamStyle } from "@/lib/site-constants";
+import {
+  DEFAULT_ARTIST,
+  DEFAULT_EMAIL,
+  assetStyle,
+  managedClass,
+  streamStyle,
+} from "@/lib/site-constants";
 import type { ArtistProfile, StreamingLink } from "@/lib/site-content";
 
 const DEFAULT_BIO =

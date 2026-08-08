@@ -1,10 +1,5 @@
 import type { AudioPlayer } from "@/hooks/use-audio-player";
-import {
-  DEFAULT_ARTIST,
-  assetStyle,
-  formatTime,
-  managedClass,
-} from "@/lib/site-constants";
+import { DEFAULT_ARTIST, assetStyle, formatTime, managedClass } from "@/lib/site-constants";
 import type { ArtistProfile } from "@/lib/site-content";
 
 export function HeroSection({

@@ -21,8 +21,7 @@ export const STREAM_STYLE: Record<string, { cls: string; glyph: string }> = {
   Triller: { cls: "", glyph: "T" },
 };
 
-export const streamStyle = (platform: string) =>
-  STREAM_STYLE[platform] ?? { cls: "", glyph: "↗" };
+export const streamStyle = (platform: string) => STREAM_STYLE[platform] ?? { cls: "", glyph: "↗" };
 
 export const SECTION_KEYS = [
   "hero",

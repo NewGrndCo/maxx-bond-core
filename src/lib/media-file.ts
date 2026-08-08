@@ -19,7 +19,10 @@ export const IMAGE_ERROR =
 export function titleFromFilename(filename: string): string {
   let name = filename.replace(/\.[^.]+$/, "");
   name = name.replace(/^\s*\d+\s*[.\-_)]\s*/, "");
-  name = name.replace(/[_\-]+/g, " ").replace(/\s+/g, " ").trim();
+  name = name
+    .replace(/[_\-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   if (name === name.toUpperCase()) {
     name = name.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
   }

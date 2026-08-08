@@ -12,6 +12,5 @@ export function useRevealOnScroll(rootRef: RefObject<HTMLElement | null>, deps: 
     );
     root.querySelectorAll(".reveal").forEach((el) => io.observe(el));
     return () => io.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rootRef, deps]);
 }

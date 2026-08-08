@@ -21,7 +21,12 @@ export function ListenModal({
   const coverUrl = activeTrack?.cover_url || profile?.album_cover_url;
   return (
     <ModalBackdrop open={open} onClose={onClose}>
-      <section className="listen-modal" role="dialog" aria-modal="true" aria-labelledby="listen-title">
+      <section
+        className="listen-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="listen-title"
+      >
         <button className="modal-close" aria-label="Close" ref={closeRef} onClick={onClose}>
           ×
         </button>
