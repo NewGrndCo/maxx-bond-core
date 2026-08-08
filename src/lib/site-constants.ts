@@ -3,7 +3,6 @@ export const NAV = [
   ["Music", "#music"],
   ["Merch", "#merch"],
   ["Tour", "#tour"],
-  ["Gallery", "#gallery"],
   ["About", "#about"],
 ] as const;
 
@@ -23,15 +22,7 @@ export const STREAM_STYLE: Record<string, { cls: string; glyph: string }> = {
 
 export const streamStyle = (platform: string) => STREAM_STYLE[platform] ?? { cls: "", glyph: "↗" };
 
-export const SECTION_KEYS = [
-  "hero",
-  "streaming",
-  "about",
-  "gallery",
-  "merch",
-  "events",
-  "newsletter",
-] as const;
+export const SECTION_KEYS = ["hero", "about", "merch", "events", "newsletter"] as const;
 
 export type SectionKey = (typeof SECTION_KEYS)[number];
 

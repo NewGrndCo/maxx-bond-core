@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
@@ -53,6 +53,7 @@ function MusicPage() {
   });
   const [draft, setDraft] = useState<Track | null>(null);
   const [busy, setBusy] = useState(false);
+  const draggedId = useRef<string | null>(null);
 
   const invalidate = () => qc.invalidateQueries({ queryKey: ["admin-tracks"] });
   const edit = draft ?? blank();
@@ -90,6 +91,29 @@ function MusicPage() {
     if (!confirm("Delete this track?")) return;
     const { error } = await supabase.from("tracks").delete().eq("id", id);
     if (error) return toast.error(error.message);
+    await invalidate();
+  };
+
+  const reorder = async (targetId: string) => {
+    const sourceId = draggedId.current;
+    draggedId.current = null;
+    if (!sourceId || sourceId === targetId) return;
+    const next = [...data];
+    const sourceIndex = next.findIndex((track) => track.id === sourceId);
+    const targetIndex = next.findIndex((track) => track.id === targetId);
+    if (sourceIndex < 0 || targetIndex < 0) return;
+    const [moved] = next.splice(sourceIndex, 1);
+    next.splice(targetIndex, 0, moved);
+    setBusy(true);
+    const results = await Promise.all(
+      next.map((track, display_order) =>
+        supabase.from("tracks").update({ display_order }).eq("id", track.id),
+      ),
+    );
+    setBusy(false);
+    const failed = results.find((result) => result.error);
+    if (failed?.error) return toast.error(failed.error.message);
+    toast.success("Track order saved");
     await invalidate();
   };
 
@@ -213,33 +237,47 @@ function MusicPage() {
       ) : (
         <div className="space-y-3">
           {data.map((track) => (
-            <ManagerCard key={track.id}>
-              <div className="flex flex-wrap items-center gap-4">
-                {track.cover_url ? (
-                  <SignedImage
-                    url={track.cover_url}
-                    alt=""
-                    className="h-16 w-16 rounded object-cover"
-                  />
-                ) : (
-                  <div className="h-16 w-16 rounded bg-white/5" />
-                )}
-                <div className="min-w-0 flex-1">
-                  <div className="font-medium">{track.title}</div>
-                  <div className="text-xs text-neutral-400">
-                    {track.artist} · Order {track.display_order} ·{" "}
-                    {track.is_published ? "Published" : "Draft"}
+            <div
+              key={track.id}
+              draggable={!busy}
+              onDragStart={() => {
+                draggedId.current = track.id;
+              }}
+              onDragOver={(event) => event.preventDefault()}
+              onDrop={() => void reorder(track.id)}
+              className="cursor-grab active:cursor-grabbing"
+            >
+              <ManagerCard>
+                <div className="flex flex-wrap items-center gap-4">
+                  <span aria-hidden="true" className="select-none text-xl text-neutral-500">
+                    ⠿
+                  </span>
+                  {track.cover_url ? (
+                    <SignedImage
+                      url={track.cover_url}
+                      alt=""
+                      className="h-16 w-16 rounded object-cover"
+                    />
+                  ) : (
+                    <div className="h-16 w-16 rounded bg-white/5" />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="font-medium">{track.title}</div>
+                    <div className="text-xs text-neutral-400">
+                      {track.artist} · Order {track.display_order} ·{" "}
+                      {track.is_published ? "Published" : "Draft"}
+                    </div>
                   </div>
+                  {track.audio_url && (
+                    <SignedAudio url={track.audio_url} className="h-10 max-w-xs" preload="none" />
+                  )}
+                  <Button variant="outline" onClick={() => setDraft(track)}>
+                    Edit
+                  </Button>
+                  <DeleteButton onClick={() => remove(track.id)} />
                 </div>
-                {track.audio_url && (
-                  <SignedAudio url={track.audio_url} className="h-10 max-w-xs" preload="none" />
-                )}
-                <Button variant="outline" onClick={() => setDraft(track)}>
-                  Edit
-                </Button>
-                <DeleteButton onClick={() => remove(track.id)} />
-              </div>
-            </ManagerCard>
+              </ManagerCard>
+            </div>
           ))}
         </div>
       )}

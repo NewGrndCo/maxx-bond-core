@@ -8,9 +8,7 @@ import { SiteFooter } from "@/components/site/site-footer";
 import { ListenModal } from "@/components/site/listen-modal";
 import { LegalModal } from "@/components/site/legal-modal";
 import { HeroSection } from "@/components/site/sections/hero-section";
-import { StreamingStrip } from "@/components/site/sections/streaming-strip";
 import { AboutSection } from "@/components/site/sections/about-section";
-import { GallerySection } from "@/components/site/sections/gallery-section";
 import { MerchSection } from "@/components/site/sections/merch-section";
 import { EventsSection } from "@/components/site/sections/events-section";
 import { NewsletterSection } from "@/components/site/sections/newsletter-section";
@@ -47,6 +45,12 @@ function Index() {
   const player = useAudioPlayer(data?.tracks ?? []);
   const profile = data?.profile;
   const links = data?.links ?? [];
+  const newsletter = (data?.settings.find((item) => item.key === "newsletter")?.value ?? {}) as {
+    headline?: string;
+    body?: string;
+    image_url?: string;
+    cta_label?: string;
+  };
 
   useModalLayer(modalOpen || Boolean(legalSlug), closeBtnRef);
   useEscapeKey(() => {
@@ -72,12 +76,10 @@ function Index() {
         onOpenListen={() => setModalOpen(true)}
       />
     ),
-    streaming: <StreamingStrip links={links} />,
-    about: <AboutSection profile={profile} links={links} />,
-    gallery: <GallerySection gallery={data?.gallery ?? []} />,
+    about: <AboutSection profile={profile} links={data?.socialLinks ?? []} />,
     merch: <MerchSection merch={data?.merch ?? []} />,
     events: <EventsSection events={data?.events ?? []} />,
-    newsletter: <NewsletterSection />,
+    newsletter: <NewsletterSection content={newsletter} />,
   };
 
   const sections = SECTION_KEYS.filter((key) => sectionConfig(key).is_visible)

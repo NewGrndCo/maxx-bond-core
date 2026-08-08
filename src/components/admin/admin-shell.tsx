@@ -27,7 +27,7 @@ const NAV: NavItem[] = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/admin/artist", label: "Artist Profile", icon: User },
   { to: "/admin/music", label: "Music", icon: Music },
-  { to: "/admin/gallery", label: "Gallery", icon: ImageIcon },
+  { to: "/admin/media", label: "Media Library", icon: ImageIcon },
   { to: "/admin/events", label: "Events", icon: Calendar },
   { to: "/admin/merch", label: "Merch", icon: ShoppingBag },
   { to: "/admin/sections", label: "Site Sections", icon: LayoutList },

@@ -1,5 +1,8 @@
 import { assetStyle } from "@/lib/site-constants";
 import type { MerchItem } from "@/lib/site-content";
+import { Link } from "@tanstack/react-router";
+
+type Product = MerchItem & { slug?: string; is_published?: boolean };
 
 export function MerchSection({ merch }: { merch: MerchItem[] }) {
   return (
@@ -9,7 +12,7 @@ export function MerchSection({ merch }: { merch: MerchItem[] }) {
       </div>
       <div className="merch-grid">
         {merch.length ? (
-          merch.map((item) => (
+          (merch as Product[]).map((item) => (
             <article key={item.id}>
               <div className="merch-img managed-image" style={assetStyle(item.image_url)} />
               <h3>{item.name}</h3>
@@ -26,6 +29,11 @@ export function MerchSection({ merch }: { merch: MerchItem[] }) {
                   </a>
                 )}
               </p>
+              {item.slug && (
+                <Link className="tour-ticket" to="/shop/$slug" params={{ slug: item.slug }}>
+                  View product
+                </Link>
+              )}
             </article>
           ))
         ) : (
