@@ -191,6 +191,53 @@ body:before {
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
 }
+.site-startup {
+  min-height: 100svh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  background: #080909;
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: 0.55em;
+}
+.site-startup-mark {
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(213, 177, 100, 0.55);
+  border-radius: 50%;
+  color: var(--gold);
+  font: 700 23px var(--display);
+  letter-spacing: 0.08em;
+  animation: startup-pulse 1.4s ease-in-out infinite;
+}
+.site-startup p {
+  margin: 0;
+  padding-left: 0.55em;
+  font: 600 12px var(--body);
+}
+.site-startup-error {
+  padding: 24px;
+  text-align: center;
+  letter-spacing: normal;
+}
+.site-startup-error h1 {
+  margin: 0 0 12px;
+  font: 600 clamp(28px, 5vw, 48px) var(--display);
+}
+.site-startup-error .site-startup-kicker {
+  color: var(--gold);
+  letter-spacing: 0.35em;
+}
+@keyframes startup-pulse {
+  50% {
+    opacity: 0.48;
+    transform: scale(0.96);
+  }
+}
 button,
 a {
   font: inherit;
