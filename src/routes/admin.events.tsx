@@ -14,6 +14,7 @@ import {
   Visibility,
   uploadPublicFile,
 } from "@/components/admin/manager-ui";
+import { SignedImage } from "@/components/admin/signed-media";
 
 export const Route = createFileRoute("/admin/events")({ component: EventsPage });
 type EventRow = Tables<"events"> & {
@@ -197,8 +198,8 @@ function EventsPage() {
             />
           </label>
           {row.image_url && (
-            <img
-              src={row.image_url}
+            <SignedImage
+              url={row.image_url}
               alt="Event artwork preview"
               className="h-40 w-40 rounded object-cover"
             />
@@ -233,7 +234,11 @@ function EventsPage() {
             <ManagerCard key={event.id}>
               <div className="flex flex-wrap items-center gap-4">
                 {event.image_url && (
-                  <img src={event.image_url} alt="" className="h-16 w-16 rounded object-cover" />
+                  <SignedImage
+                    url={event.image_url}
+                    alt={`${event.title} flyer`}
+                    className="h-16 w-16 rounded object-cover"
+                  />
                 )}
                 <div className="flex-1">
                   <strong>{event.title}</strong>
