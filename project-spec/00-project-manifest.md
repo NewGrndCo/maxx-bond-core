@@ -26,6 +26,7 @@ V1 includes every capability in the supplied CMS, media, events, music, and comm
 8. Product and order snapshots preserve purchase-time names, variants, SKUs, quantities, and prices.
 9. The public audio element is owned by the application shell so client-side event and product navigation does not interrupt playback.
 10. Homepage section ordering is saved as one normalized list; private storage assets are rendered through signed URLs in admin previews and detail routes.
+11. Netlify builds publish the Nitro-generated `dist` directory; SSR is packaged through Nitro's Netlify function output.
 
 ## Assumptions and blockers
 
