@@ -91,7 +91,11 @@ function LoadedHomepage({ data }: { data: SiteContent }) {
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
 
-  const player = useAudioPlayer(data.tracks);
+  const musicSettings = (data.settings.find((item) => item.key === "music_player")?.value ??
+    {}) as {
+    autoplay?: boolean;
+  };
+  const player = useAudioPlayer(data.tracks, musicSettings.autoplay ?? true);
   const profile = data.profile;
   const links = data.links;
   const newsletter = (data.settings.find((item) => item.key === "newsletter")?.value ?? {}) as {

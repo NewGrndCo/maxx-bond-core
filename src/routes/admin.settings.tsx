@@ -9,11 +9,13 @@ import {
   ManagerHeader,
   TextAreaField,
   TextField,
+  Visibility,
   uploadPublicFile,
 } from "@/components/admin/manager-ui";
 
 export const Route = createFileRoute("/admin/settings")({ component: SettingsPage });
 type Newsletter = { headline: string; body: string; image_url: string; cta_label: string };
+type MusicPlayerSettings = { autoplay: boolean };
 const defaults: Newsletter = {
   headline: "Join the Foreign Life List",
   body: "Be the first to know about new music, merch drops, tour dates, and exclusive content.",
@@ -24,6 +26,7 @@ function SettingsPage() {
   const qc = useQueryClient();
   const [draft, setDraft] = useState<Newsletter | null>(null);
   const [busy, setBusy] = useState(false);
+  const [musicDraft, setMusicDraft] = useState<MusicPlayerSettings | null>(null);
   const { data } = useQuery({
     queryKey: ["site-settings", "newsletter"],
     queryFn: async () => {
@@ -34,6 +37,18 @@ function SettingsPage() {
         .maybeSingle();
       if (error) throw error;
       return (data?.value ?? defaults) as Newsletter;
+    },
+  });
+  const { data: savedMusicSettings } = useQuery({
+    queryKey: ["site-settings", "music-player"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "music_player")
+        .maybeSingle();
+      if (error) throw error;
+      return (data?.value ?? { autoplay: true }) as MusicPlayerSettings;
     },
   });
   const value = draft ?? data ?? defaults;
@@ -60,12 +75,46 @@ function SettingsPage() {
       setBusy(false);
     }
   };
+  const musicSettings = musicDraft ?? savedMusicSettings ?? { autoplay: true };
+  const saveMusicSettings = async () => {
+    setBusy(true);
+    const { error } = await supabase
+      .from("site_settings")
+      .upsert({ key: "music_player", value: musicSettings } as never, { onConflict: "key" });
+    setBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success("Music player settings saved");
+    setMusicDraft(null);
+    await Promise.all([
+      qc.invalidateQueries({ queryKey: ["site-settings", "music-player"] }),
+      qc.invalidateQueries({ queryKey: ["public-site-content"] }),
+    ]);
+  };
   return (
     <div className="space-y-6">
       <ManagerHeader
         title="Site Settings"
         description="Manage newsletter content and assets. Paste a Media Library URL to reuse an existing asset without uploading a duplicate."
       />
+      <ManagerCard>
+        <h2 className="text-lg font-semibold">Music player</h2>
+        <p className="text-sm text-neutral-400">
+          When enabled, the featured track starts automatically. If a browser blocks sound, playback
+          starts muted and visitors can unmute from the player.
+        </p>
+        <Visibility
+          checked={musicSettings.autoplay}
+          onCheckedChange={(autoplay) => setMusicDraft({ autoplay })}
+          label="Autoplay featured song when the site opens"
+        />
+        <Button
+          disabled={busy}
+          className="bg-amber-300 text-black"
+          onClick={() => void saveMusicSettings()}
+        >
+          Save music settings
+        </Button>
+      </ManagerCard>
       <ManagerCard>
         <h2 className="text-lg font-semibold">Mailing list</h2>
         <div className="grid gap-4 md:grid-cols-2">

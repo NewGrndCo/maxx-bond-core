@@ -13,6 +13,7 @@ import {
   Visibility,
   uploadPublicFile,
 } from "@/components/admin/manager-ui";
+import { SignedImage } from "@/components/admin/signed-media";
 export const Route = createFileRoute("/admin/merch")({ component: MerchPage });
 function MerchPage() {
   const qc = useQueryClient();
@@ -176,7 +177,11 @@ function MerchPage() {
             onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])}
           />
           {edit.image_url && (
-            <img className="h-32 w-32 rounded object-cover" src={edit.image_url} alt="" />
+            <SignedImage
+              className="h-32 w-32 rounded object-cover"
+              url={edit.image_url}
+              alt={`${edit.name || "Product"} preview`}
+            />
           )}
           <Visibility checked={edit.is_visible} onCheckedChange={(v) => set("is_visible", v)} />
           <Visibility
@@ -205,7 +210,11 @@ function MerchPage() {
           <ManagerCard key={item.id}>
             <div className="flex gap-4">
               {item.image_url && (
-                <img src={item.image_url} alt="" className="h-20 w-20 rounded object-cover" />
+                <SignedImage
+                  url={item.image_url}
+                  alt={`${item.name} preview`}
+                  className="h-20 w-20 rounded object-cover"
+                />
               )}
               <div className="flex-1">
                 <strong>{item.name}</strong>

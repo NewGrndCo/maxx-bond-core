@@ -3,12 +3,12 @@
 - State: validated
 - Mode: product
 - Vertical: artist / direct-to-fan commerce
-- Current phase: implementation
+- Current phase: production hardening
 - Capabilities: public music player, events, CMS, media library, merchandise, cart, Stripe Checkout
 - Preserved systems: TanStack Start/Router, React Query, Supabase Auth/Postgres/Storage, existing visual identity and content tables
-- Last baseline build: passing (2026-08-08)
+- Last baseline build: passing (2026-08-08), including persistent playback/media/order hardening
 - Baseline lint: blocked by repository-wide CRLF/Prettier mismatch (8,711 existing formatting errors)
-- Next action: additive schema, public routes, secure checkout functions, CMS extensions
+- Next action: deploy the current CMS/playback hardening release and complete Stripe environment configuration
 
 ## Scope
 
@@ -24,6 +24,8 @@ V1 includes every capability in the supplied CMS, media, events, music, and comm
 6. Cart state is client-side and persisted locally. Product prices and availability are re-read server-side before Stripe Checkout creation.
 7. Stripe secret and webhook signing keys exist only in Supabase Edge Function secrets. Webhooks are signature-verified and update server-owned orders.
 8. Product and order snapshots preserve purchase-time names, variants, SKUs, quantities, and prices.
+9. The public audio element is owned by the application shell so client-side event and product navigation does not interrupt playback.
+10. Homepage section ordering is saved as one normalized list; private storage assets are rendered through signed URLs in admin previews and detail routes.
 
 ## Assumptions and blockers
 
@@ -37,6 +39,10 @@ V1 includes every capability in the supplied CMS, media, events, music, and comm
 
 - Given published tracks, when an admin drags a track, then the saved order controls the public player.
 - Given browser autoplay denial, when the homepage loads, then no error UI appears and the player remains ready.
+- Given autoplay is enabled, when the homepage loads, then the featured track attempts policy-compliant muted autoplay and exposes an immediate unmute control.
+- Given active playback, when a visitor opens an event or product route, then the same track continues without resetting.
+- Given an admin reorders homepage sections, when the save completes, then every section receives one deterministic order and the public homepage follows it.
+- Given a private merch or event image, when admin or public detail UI renders it, then a signed storage URL displays the asset.
 - Given published events, when a visitor opens an event, then its slug route renders CMS-managed details and CTAs.
 - Given purchasable products, when a visitor checks out, then Stripe receives server-validated line items and redirects to success or cancellation state.
 - Given a referenced media asset, when an admin attempts deletion, then usage is surfaced and destructive removal requires explicit confirmation.

@@ -28,7 +28,6 @@ export function HeroSection({
     seek,
     setPlayerVolume,
     toggleMute,
-    audioProps,
   } = player;
   const heroUrl = activeTrack?.cover_url || profile?.album_cover_url || profile?.hero_artwork_url;
   const coverUrl = activeTrack?.cover_url || profile?.album_cover_url;
@@ -123,7 +122,6 @@ export function HeroSection({
             onChange={(e) => setPlayerVolume(Number(e.target.value))}
           />
         </div>
-        <audio {...audioProps} />
         <div className="hero-cta-row">
           <button className="listen-button" onClick={onOpenListen}>
             <span>◎</span> Listen Everywhere
