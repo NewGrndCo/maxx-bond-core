@@ -1,502 +1,782 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5";
-  };
+    PostgrestVersion: "14.5"
+  }
   public: {
     Tables: {
       artist_profile: {
         Row: {
-          album_cover_url: string | null;
-          artist_name: string;
-          biography: string | null;
-          created_at: string;
-          hero_artwork_url: string | null;
-          hero_headline: string | null;
-          hero_subheading: string | null;
-          id: string;
-          management_email: string | null;
-          management_phone: string | null;
-          portrait_url: string | null;
-          singleton: boolean;
-          updated_at: string;
-        };
+          album_cover_url: string | null
+          artist_name: string
+          biography: string | null
+          created_at: string
+          hero_artwork_url: string | null
+          hero_headline: string | null
+          hero_subheading: string | null
+          id: string
+          management_email: string | null
+          management_phone: string | null
+          portrait_url: string | null
+          singleton: boolean
+          updated_at: string
+        }
         Insert: {
-          album_cover_url?: string | null;
-          artist_name?: string;
-          biography?: string | null;
-          created_at?: string;
-          hero_artwork_url?: string | null;
-          hero_headline?: string | null;
-          hero_subheading?: string | null;
-          id?: string;
-          management_email?: string | null;
-          management_phone?: string | null;
-          portrait_url?: string | null;
-          singleton?: boolean;
-          updated_at?: string;
-        };
+          album_cover_url?: string | null
+          artist_name?: string
+          biography?: string | null
+          created_at?: string
+          hero_artwork_url?: string | null
+          hero_headline?: string | null
+          hero_subheading?: string | null
+          id?: string
+          management_email?: string | null
+          management_phone?: string | null
+          portrait_url?: string | null
+          singleton?: boolean
+          updated_at?: string
+        }
         Update: {
-          album_cover_url?: string | null;
-          artist_name?: string;
-          biography?: string | null;
-          created_at?: string;
-          hero_artwork_url?: string | null;
-          hero_headline?: string | null;
-          hero_subheading?: string | null;
-          id?: string;
-          management_email?: string | null;
-          management_phone?: string | null;
-          portrait_url?: string | null;
-          singleton?: boolean;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
+          album_cover_url?: string | null
+          artist_name?: string
+          biography?: string | null
+          created_at?: string
+          hero_artwork_url?: string | null
+          hero_headline?: string | null
+          hero_subheading?: string | null
+          id?: string
+          management_email?: string | null
+          management_phone?: string | null
+          portrait_url?: string | null
+          singleton?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
-          city: string;
-          created_at: string;
-          display_order: number;
-          event_date: string;
-          id: string;
-          is_visible: boolean;
-          notes: string | null;
-          ticket_url: string | null;
-          updated_at: string;
-          venue: string;
-        };
+          additional_url: string
+          city: string
+          created_at: string
+          cta_label: string
+          description: string
+          display_order: number
+          event_date: string
+          event_time: string | null
+          id: string
+          image_url: string
+          is_published: boolean
+          is_visible: boolean
+          notes: string | null
+          slug: string
+          ticket_url: string | null
+          title: string
+          updated_at: string
+          venue: string
+        }
         Insert: {
-          city: string;
-          created_at?: string;
-          display_order?: number;
-          event_date: string;
-          id?: string;
-          is_visible?: boolean;
-          notes?: string | null;
-          ticket_url?: string | null;
-          updated_at?: string;
-          venue: string;
-        };
+          additional_url?: string
+          city: string
+          created_at?: string
+          cta_label?: string
+          description?: string
+          display_order?: number
+          event_date: string
+          event_time?: string | null
+          id?: string
+          image_url?: string
+          is_published?: boolean
+          is_visible?: boolean
+          notes?: string | null
+          slug: string
+          ticket_url?: string | null
+          title?: string
+          updated_at?: string
+          venue: string
+        }
         Update: {
-          city?: string;
-          created_at?: string;
-          display_order?: number;
-          event_date?: string;
-          id?: string;
-          is_visible?: boolean;
-          notes?: string | null;
-          ticket_url?: string | null;
-          updated_at?: string;
-          venue?: string;
-        };
-        Relationships: [];
-      };
+          additional_url?: string
+          city?: string
+          created_at?: string
+          cta_label?: string
+          description?: string
+          display_order?: number
+          event_date?: string
+          event_time?: string | null
+          id?: string
+          image_url?: string
+          is_published?: boolean
+          is_visible?: boolean
+          notes?: string | null
+          slug?: string
+          ticket_url?: string | null
+          title?: string
+          updated_at?: string
+          venue?: string
+        }
+        Relationships: []
+      }
       gallery_items: {
         Row: {
-          alt_text: string | null;
-          caption: string | null;
-          created_at: string;
-          display_order: number;
-          id: string;
-          image_url: string;
-          is_visible: boolean;
-          updated_at: string;
-        };
+          alt_text: string | null
+          caption: string | null
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string
+          is_visible: boolean
+          updated_at: string
+        }
         Insert: {
-          alt_text?: string | null;
-          caption?: string | null;
-          created_at?: string;
-          display_order?: number;
-          id?: string;
-          image_url: string;
-          is_visible?: boolean;
-          updated_at?: string;
-        };
+          alt_text?: string | null
+          caption?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url: string
+          is_visible?: boolean
+          updated_at?: string
+        }
         Update: {
-          alt_text?: string | null;
-          caption?: string | null;
-          created_at?: string;
-          display_order?: number;
-          id?: string;
-          image_url?: string;
-          is_visible?: boolean;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
+          alt_text?: string | null
+          caption?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          is_visible?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       legal_documents: {
         Row: {
-          body_md: string;
-          created_at: string;
-          id: string;
-          is_published: boolean;
-          slug: string;
-          title: string;
-          updated_at: string;
-        };
+          body_md: string
+          created_at: string
+          id: string
+          is_published: boolean
+          slug: string
+          title: string
+          updated_at: string
+        }
         Insert: {
-          body_md?: string;
-          created_at?: string;
-          id?: string;
-          is_published?: boolean;
-          slug: string;
-          title: string;
-          updated_at?: string;
-        };
+          body_md?: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          slug: string
+          title: string
+          updated_at?: string
+        }
         Update: {
-          body_md?: string;
-          created_at?: string;
-          id?: string;
-          is_published?: boolean;
-          slug?: string;
-          title?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
+          body_md?: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      media_assets: {
+        Row: {
+          alt_text: string
+          bucket: string
+          created_at: string
+          folder: string
+          id: string
+          is_published: boolean
+          label: string
+          mime_type: string
+          object_path: string
+          public_url: string
+          size_bytes: number
+          updated_at: string
+        }
+        Insert: {
+          alt_text?: string
+          bucket: string
+          created_at?: string
+          folder?: string
+          id?: string
+          is_published?: boolean
+          label?: string
+          mime_type?: string
+          object_path: string
+          public_url?: string
+          size_bytes?: number
+          updated_at?: string
+        }
+        Update: {
+          alt_text?: string
+          bucket?: string
+          created_at?: string
+          folder?: string
+          id?: string
+          is_published?: boolean
+          label?: string
+          mime_type?: string
+          object_path?: string
+          public_url?: string
+          size_bytes?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       merch_items: {
         Row: {
-          created_at: string;
-          currency: string;
-          description: string | null;
-          display_order: number;
-          external_url: string | null;
-          id: string;
-          image_url: string | null;
-          is_visible: boolean;
-          name: string;
-          price_cents: number;
-          updated_at: string;
-        };
+          created_at: string
+          currency: string
+          description: string | null
+          display_order: number
+          external_url: string | null
+          id: string
+          image_url: string | null
+          inventory_quantity: number | null
+          is_published: boolean
+          is_visible: boolean
+          name: string
+          price_cents: number
+          sku: string
+          slug: string
+          track_inventory: boolean
+          updated_at: string
+        }
         Insert: {
-          created_at?: string;
-          currency?: string;
-          description?: string | null;
-          display_order?: number;
-          external_url?: string | null;
-          id?: string;
-          image_url?: string | null;
-          is_visible?: boolean;
-          name: string;
-          price_cents?: number;
-          updated_at?: string;
-        };
+          created_at?: string
+          currency?: string
+          description?: string | null
+          display_order?: number
+          external_url?: string | null
+          id?: string
+          image_url?: string | null
+          inventory_quantity?: number | null
+          is_published?: boolean
+          is_visible?: boolean
+          name: string
+          price_cents?: number
+          sku?: string
+          slug: string
+          track_inventory?: boolean
+          updated_at?: string
+        }
         Update: {
-          created_at?: string;
-          currency?: string;
-          description?: string | null;
-          display_order?: number;
-          external_url?: string | null;
-          id?: string;
-          image_url?: string | null;
-          is_visible?: boolean;
-          name?: string;
-          price_cents?: number;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
+          created_at?: string
+          currency?: string
+          description?: string | null
+          display_order?: number
+          external_url?: string | null
+          id?: string
+          image_url?: string | null
+          inventory_quantity?: number | null
+          is_published?: boolean
+          is_visible?: boolean
+          name?: string
+          price_cents?: number
+          sku?: string
+          slug?: string
+          track_inventory?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          order_id: string
+          product_id: string | null
+          product_name: string
+          quantity: number
+          sku: string
+          unit_price_cents: number
+          variant_id: string | null
+          variant_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_id: string
+          product_id?: string | null
+          product_name: string
+          quantity: number
+          sku?: string
+          unit_price_cents: number
+          variant_id?: string | null
+          variant_name?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_id?: string
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          sku?: string
+          unit_price_cents?: number
+          variant_id?: string | null
+          variant_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "merch_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string
+          currency: string
+          customer_details: Json
+          email: string
+          id: string
+          status: Database["public"]["Enums"]["order_status"]
+          stripe_checkout_session_id: string | null
+          stripe_payment_intent_id: string | null
+          subtotal_cents: number
+          total_cents: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          customer_details?: Json
+          email?: string
+          id?: string
+          status?: Database["public"]["Enums"]["order_status"]
+          stripe_checkout_session_id?: string | null
+          stripe_payment_intent_id?: string | null
+          subtotal_cents?: number
+          total_cents?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          customer_details?: Json
+          email?: string
+          id?: string
+          status?: Database["public"]["Enums"]["order_status"]
+          stripe_checkout_session_id?: string | null
+          stripe_payment_intent_id?: string | null
+          subtotal_cents?: number
+          total_cents?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      product_variants: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          inventory_quantity: number | null
+          is_available: boolean
+          name: string
+          price_cents: number | null
+          product_id: string
+          sku: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          inventory_quantity?: number | null
+          is_available?: boolean
+          name: string
+          price_cents?: number | null
+          product_id: string
+          sku?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          inventory_quantity?: number | null
+          is_available?: boolean
+          name?: string
+          price_cents?: number | null
+          product_id?: string
+          sku?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variants_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "merch_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_sections: {
         Row: {
-          body: string | null;
-          created_at: string;
-          display_order: number;
-          id: string;
-          is_visible: boolean;
-          key: string;
-          subtitle: string | null;
-          title: string | null;
-          updated_at: string;
-        };
+          body: string | null
+          created_at: string
+          display_order: number
+          id: string
+          is_visible: boolean
+          key: string
+          subtitle: string | null
+          title: string | null
+          updated_at: string
+        }
         Insert: {
-          body?: string | null;
-          created_at?: string;
-          display_order?: number;
-          id?: string;
-          is_visible?: boolean;
-          key: string;
-          subtitle?: string | null;
-          title?: string | null;
-          updated_at?: string;
-        };
+          body?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_visible?: boolean
+          key: string
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+        }
         Update: {
-          body?: string | null;
-          created_at?: string;
-          display_order?: number;
-          id?: string;
-          is_visible?: boolean;
-          key?: string;
-          subtitle?: string | null;
-          title?: string | null;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
+          body?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_visible?: boolean
+          key?: string
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
-          created_at: string;
-          id: string;
-          key: string;
-          updated_at: string;
-          value: Json;
-        };
+          created_at: string
+          id: string
+          key: string
+          updated_at: string
+          value: Json
+        }
         Insert: {
-          created_at?: string;
-          id?: string;
-          key: string;
-          updated_at?: string;
-          value?: Json;
-        };
+          created_at?: string
+          id?: string
+          key: string
+          updated_at?: string
+          value?: Json
+        }
         Update: {
-          created_at?: string;
-          id?: string;
-          key?: string;
-          updated_at?: string;
-          value?: Json;
-        };
-        Relationships: [];
-      };
+          created_at?: string
+          id?: string
+          key?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          created_at: string
+          display_order: number
+          icon: string
+          id: string
+          is_visible: boolean
+          platform: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          icon?: string
+          id?: string
+          is_visible?: boolean
+          platform: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          icon?: string
+          id?: string
+          is_visible?: boolean
+          platform?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       streaming_links: {
         Row: {
-          created_at: string;
-          display_order: number;
-          icon: string | null;
-          id: string;
-          is_visible: boolean;
-          platform: string;
-          updated_at: string;
-          url: string;
-        };
+          created_at: string
+          display_order: number
+          icon: string | null
+          id: string
+          is_visible: boolean
+          platform: string
+          updated_at: string
+          url: string
+        }
         Insert: {
-          created_at?: string;
-          display_order?: number;
-          icon?: string | null;
-          id?: string;
-          is_visible?: boolean;
-          platform: string;
-          updated_at?: string;
-          url: string;
-        };
+          created_at?: string
+          display_order?: number
+          icon?: string | null
+          id?: string
+          is_visible?: boolean
+          platform: string
+          updated_at?: string
+          url: string
+        }
         Update: {
-          created_at?: string;
-          display_order?: number;
-          icon?: string | null;
-          id?: string;
-          is_visible?: boolean;
-          platform?: string;
-          updated_at?: string;
-          url?: string;
-        };
-        Relationships: [];
-      };
+          created_at?: string
+          display_order?: number
+          icon?: string | null
+          id?: string
+          is_visible?: boolean
+          platform?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       tracks: {
         Row: {
-          artist: string | null;
-          audio_url: string | null;
-          cover_url: string | null;
-          created_at: string;
-          display_order: number;
-          duration_seconds: number | null;
-          id: string;
-          is_published: boolean;
-          title: string;
-          updated_at: string;
-        };
+          artist: string | null
+          audio_url: string | null
+          cover_url: string | null
+          created_at: string
+          display_order: number
+          duration_seconds: number | null
+          id: string
+          is_featured: boolean
+          is_published: boolean
+          title: string
+          updated_at: string
+        }
         Insert: {
-          artist?: string | null;
-          audio_url?: string | null;
-          cover_url?: string | null;
-          created_at?: string;
-          display_order?: number;
-          duration_seconds?: number | null;
-          id?: string;
-          is_published?: boolean;
-          title: string;
-          updated_at?: string;
-        };
+          artist?: string | null
+          audio_url?: string | null
+          cover_url?: string | null
+          created_at?: string
+          display_order?: number
+          duration_seconds?: number | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          title: string
+          updated_at?: string
+        }
         Update: {
-          artist?: string | null;
-          audio_url?: string | null;
-          cover_url?: string | null;
-          created_at?: string;
-          display_order?: number;
-          duration_seconds?: number | null;
-          id?: string;
-          is_published?: boolean;
-          title?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
+          artist?: string | null
+          audio_url?: string | null
+          cover_url?: string | null
+          created_at?: string
+          display_order?: number
+          duration_seconds?: number | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
-          created_at: string;
-          id: string;
-          role: Database["public"]["Enums"]["app_role"];
-          user_id: string;
-        };
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
         Insert: {
-          created_at?: string;
-          id?: string;
-          role: Database["public"]["Enums"]["app_role"];
-          user_id: string;
-        };
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
         Update: {
-          created_at?: string;
-          id?: string;
-          role?: Database["public"]["Enums"]["app_role"];
-          user_id?: string;
-        };
-        Relationships: [];
-      };
-    };
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
-      admin_exists: { Args: never; Returns: boolean };
-      claim_first_admin: { Args: never; Returns: boolean };
+      admin_exists: { Args: never; Returns: boolean }
+      claim_first_admin: { Args: never; Returns: boolean }
       has_role: {
         Args: {
-          _role: Database["public"]["Enums"]["app_role"];
-          _user_id: string;
-        };
-        Returns: boolean;
-      };
-      is_admin: { Args: { _user_id: string }; Returns: boolean };
-    };
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
+    }
     Enums: {
-      app_role: "admin" | "editor";
-    };
+      app_role: "admin" | "editor"
+      order_status: "pending" | "paid" | "failed" | "cancelled" | "refunded"
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
+      [_ in never]: never
+    }
+  }
+}
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">];
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R;
+      Row: infer R
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] & DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R;
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
       }
       ? R
       : never
-    : never;
+    : never
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
+      Insert: infer I
     }
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I;
+        Insert: infer I
       }
       ? I
       : never
-    : never;
+    : never
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U;
+      Update: infer U
     }
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U;
+        Update: infer U
       }
       ? U
       : never
-    : never;
+    : never
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never;
+    : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never;
+    : never
 
 export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "editor"],
+      order_status: ["pending", "paid", "failed", "cancelled", "refunded"],
     },
   },
-} as const;
+} as const
