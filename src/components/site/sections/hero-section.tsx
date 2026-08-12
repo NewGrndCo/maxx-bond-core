@@ -1,7 +1,8 @@
 import { Heart, Pause, Play, SkipBack, SkipForward, Volume2, VolumeX } from "lucide-react";
 import type { AudioPlayer } from "@/hooks/use-audio-player";
-import { DEFAULT_ARTIST, assetStyle, formatTime, managedClass } from "@/lib/site-constants";
+import { DEFAULT_ARTIST, formatTime } from "@/lib/site-constants";
 import type { ArtistProfile } from "@/lib/site-content";
+import { ManagedImage } from "@/components/site/managed-image";
 
 export function HeroSection({
   profile,
@@ -44,12 +45,7 @@ export function HeroSection({
         <div className="vinyl" style={{ animationPlayState: playing ? "running" : "paused" }}>
           <span />
         </div>
-        <div
-          className={managedClass(heroUrl, "hero-art")}
-          style={assetStyle(heroUrl)}
-          role="img"
-          aria-label="Featured album artwork"
-        />
+        <ManagedImage className="hero-art" url={heroUrl} alt="Featured album artwork" priority />
       </div>
       <div className="hero-copy">
         <p className="eyebrow">Featured music</p>
@@ -59,7 +55,12 @@ export function HeroSection({
         </h1>
         <h2>{artist}</h2>
         <div id="music" className="player glass" aria-label="Music player">
-          <div className={managedClass(coverUrl, "player-cover")} style={assetStyle(coverUrl)} />
+          <ManagedImage
+            className="player-cover"
+            url={coverUrl}
+            alt="Current track artwork"
+            priority
+          />
           <div className="track-info">
             <strong>{activeTrack?.title || "Upload music in Admin"}</strong>
             <span>{artist}</span>

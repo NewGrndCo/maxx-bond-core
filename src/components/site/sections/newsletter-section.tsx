@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { assetStyle, managedClass } from "@/lib/site-constants";
+import { ManagedImage } from "@/components/site/managed-image";
 
 type NewsletterContent = {
   headline?: string;
@@ -43,12 +43,7 @@ export function NewsletterSection({ content = {} }: { content?: NewsletterConten
           </button>
         </form>
       </div>
-      <div
-        className={managedClass(content.image_url, "newsletter-art")}
-        style={assetStyle(content.image_url)}
-        role="img"
-        aria-label="Newsletter artwork"
-      />
+      <ManagedImage className="newsletter-art" url={content.image_url} alt="Newsletter artwork" />
     </section>
   );
 }

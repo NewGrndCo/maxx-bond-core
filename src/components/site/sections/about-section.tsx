@@ -1,5 +1,6 @@
-import { DEFAULT_ARTIST, DEFAULT_EMAIL, assetStyle, managedClass } from "@/lib/site-constants";
+import { DEFAULT_ARTIST, DEFAULT_EMAIL } from "@/lib/site-constants";
 import type { ArtistProfile, SocialLink } from "@/lib/site-content";
+import { ManagedImage } from "@/components/site/managed-image";
 
 const DEFAULT_BIO =
   "Uniondale raised. World focused. Maxx Bond brings raw storytelling and real-life experiences over hard-hitting production.";
@@ -14,12 +15,7 @@ export function AboutSection({
   const name = profile?.artist_name || DEFAULT_ARTIST;
   return (
     <section id="about" className="about section-shell reveal">
-      <div
-        className={managedClass(profile?.portrait_url, "portrait")}
-        style={assetStyle(profile?.portrait_url)}
-        role="img"
-        aria-label={`Portrait of ${name}`}
-      />
+      <ManagedImage className="portrait" url={profile?.portrait_url} alt={`Portrait of ${name}`} />
       <div className="about-copy">
         <p className="eyebrow">About</p>
         <h2>{name}</h2>

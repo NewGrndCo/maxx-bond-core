@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
+import { Fragment, useRef, useState, type ReactNode } from "react";
 import { useAudioPlayer } from "@/hooks/use-audio-player";
 import { useEscapeKey, useModalLayer } from "@/hooks/use-modal-layer";
 import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
@@ -13,13 +13,14 @@ import { MerchSection } from "@/components/site/sections/merch-section";
 import { EventsSection } from "@/components/site/sections/events-section";
 import { NewsletterSection } from "@/components/site/sections/newsletter-section";
 import { SECTION_KEYS, type SectionKey } from "@/lib/site-constants";
-import { useSiteContent, type SiteContent } from "@/lib/site-content";
+import { siteContentQueryOptions, useSiteContent, type SiteContent } from "@/lib/site-content";
 
 const TITLE = "Maxx Bond — Official Site | Music, Merch & Tour Dates";
 const DESCRIPTION =
   "Stream Maxx Bond's music, shop official merch, and catch upcoming tour dates. Uniondale raised, world focused.";
 
 export const Route = createFileRoute("/")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(siteContentQueryOptions()),
   component: Index,
   head: () => ({
     meta: [
@@ -35,25 +36,6 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { data, error, refetch } = useSiteContent();
-  const [fontsReady, setFontsReady] = useState(false);
-
-  useEffect(() => {
-    let active = true;
-    const fonts = document.fonts;
-
-    if (!fonts) {
-      setFontsReady(true);
-      return;
-    }
-
-    void fonts.ready.finally(() => {
-      if (active) setFontsReady(true);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, []);
 
   if (error) {
     return (
@@ -67,7 +49,7 @@ function Index() {
     );
   }
 
-  if (!data || !fontsReady) return <SiteStartup />;
+  if (!data) return <SiteStartup />;
 
   return <LoadedHomepage data={data} />;
 }
