@@ -1,6 +1,6 @@
-import { assetStyle } from "@/lib/site-constants";
 import type { MerchItem } from "@/lib/site-content";
 import { Link } from "@tanstack/react-router";
+import { ManagedImage } from "@/components/site/managed-image";
 
 type Product = MerchItem & { slug?: string; is_published?: boolean };
 
@@ -14,7 +14,7 @@ export function MerchSection({ merch }: { merch: MerchItem[] }) {
         {merch.length ? (
           (merch as Product[]).map((item) => (
             <article key={item.id}>
-              <div className="merch-img managed-image" style={assetStyle(item.image_url)} />
+              <ManagedImage className="merch-img" url={item.image_url} alt={item.name} />
               <h3>{item.name}</h3>
               <p>
                 ${(item.price_cents / 100).toFixed(2)}{" "}

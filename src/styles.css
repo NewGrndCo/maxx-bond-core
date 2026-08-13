@@ -178,7 +178,7 @@ body:before {
   position: fixed;
   inset: -42px;
   z-index: -2;
-  background: url("/assets/site-reference.png") center top/cover fixed;
+  background: url("/assets/site-reference.webp") center top/cover fixed;
   opacity: 0.16;
   filter: blur(34px) saturate(1.25) brightness(0.55);
   transform: scale(1.08);
@@ -330,7 +330,7 @@ button {
   background: #ccc;
 }
 .sprite {
-  background-image: url("/assets/site-reference.png");
+  background-image: url("/assets/site-reference.webp");
   background-repeat: no-repeat;
   background-color: #171717;
 }
@@ -581,6 +581,7 @@ button {
   align-items: center;
 }
 .portrait {
+  width: 100%;
   height: 218px;
   border-radius: 12px;
   background-size: 1024px 1536px;
@@ -704,6 +705,7 @@ button {
   border-radius: 7px;
 }
 .merch-img {
+  width: 100%;
   height: 150px;
   background-size: 1024px 1536px;
   border-radius: 4px;
@@ -822,6 +824,8 @@ button {
   font-weight: 700;
 }
 .newsletter-art {
+  width: 100%;
+  height: 100%;
   background-size: 1024px 1536px;
   background-position: -560px -1295px;
 }
@@ -1355,9 +1359,10 @@ button {
   flex: none;
 }
 .managed-image {
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  background: linear-gradient(135deg, #1b1b19, #0d0e0e);
 }
 .audio-progress {
   appearance: none;

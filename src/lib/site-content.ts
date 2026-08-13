@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import { signStorageUrl, signMany } from "@/lib/storage-url";
+import { signStorageUrls } from "@/lib/storage-url";
 
 export type Track = Tables<"tracks">;
 export type StreamingLink = Tables<"streaming_links">;
@@ -61,26 +61,62 @@ export async function fetchSiteContent(): Promise<SiteContent> {
       : b.event_date.localeCompare(a.event_date);
   });
 
+  const profileData = profile.data;
+  const trackData = tracks.data ?? [];
+  const merchData = merch.data ?? [];
+  const settingData = settings.data ?? [];
+  const newsletterSetting = settingData.find((item) => item.key === "newsletter");
+  const newsletterValue = (newsletterSetting?.value ?? {}) as { image_url?: string };
+  const signedUrls = await signStorageUrls([
+    profileData?.portrait_url,
+    profileData?.hero_artwork_url,
+    profileData?.album_cover_url,
+    ...trackData.flatMap((track) => [track.audio_url, track.cover_url]),
+    ...merchData.map((item) => item.image_url),
+    newsletterValue.image_url,
+  ]);
+  const signed = (url: string | null | undefined) => (url ? (signedUrls.get(url) ?? url) : "");
+
   return {
-    profile: profile.data
+    profile: profileData
       ? {
-          ...profile.data,
-          portrait_url: await signStorageUrl(profile.data.portrait_url),
-          hero_artwork_url: await signStorageUrl(profile.data.hero_artwork_url),
-          album_cover_url: await signStorageUrl(profile.data.album_cover_url),
+          ...profileData,
+          portrait_url: signed(profileData.portrait_url),
+          hero_artwork_url: signed(profileData.hero_artwork_url),
+          album_cover_url: signed(profileData.album_cover_url),
         }
       : null,
-    tracks: await signMany(tracks.data ?? [], ["audio_url", "cover_url"]),
+    tracks: trackData.map((track) => ({
+      ...track,
+      audio_url: signed(track.audio_url),
+      cover_url: signed(track.cover_url),
+    })),
     links: links.data ?? [],
     socialLinks: (socialLinks.data ?? []) as unknown as SocialLink[],
     events: orderedEvents,
-    merch: await signMany(merch.data ?? [], ["image_url"]),
+    merch: merchData.map((item) => ({ ...item, image_url: signed(item.image_url) })),
     sections: sections.data ?? [],
     legal: legal.data ?? [],
-    settings: settings.data ?? [],
+    settings: settingData.map((item) =>
+      item.key === "newsletter" && newsletterValue.image_url
+        ? {
+            ...item,
+            value: { ...newsletterValue, image_url: signed(newsletterValue.image_url) },
+          }
+        : item,
+    ) as SiteSetting[],
   };
 }
 
+export const siteContentQueryOptions = () =>
+  queryOptions({
+    queryKey: ["public-site-content"],
+    queryFn: fetchSiteContent,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+
 export function useSiteContent() {
-  return useQuery({ queryKey: ["public-site-content"], queryFn: fetchSiteContent });
+  return useQuery(siteContentQueryOptions());
 }

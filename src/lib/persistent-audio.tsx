@@ -34,6 +34,35 @@ export function PersistentAudioProvider({ children }: { children: ReactNode }) {
   const initialAutoplayAttempted = useRef(false);
   const activeTrack = tracks[trackIndex];
 
+  useEffect(() => {
+    if (!("mediaSession" in navigator) || !activeTrack) return;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: activeTrack.title,
+      artist: activeTrack.artist || undefined,
+      artwork: activeTrack.cover_url ? [{ src: activeTrack.cover_url }] : undefined,
+    });
+  }, [activeTrack]);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator)) return;
+    navigator.mediaSession.playbackState = playing ? "playing" : "paused";
+  }, [playing]);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator) || !duration || !Number.isFinite(duration)) return;
+
+    try {
+      navigator.mediaSession.setPositionState({
+        duration,
+        playbackRate: audioRef.current?.playbackRate || 1,
+        position: Math.min(Math.max(currentTime, 0), duration),
+      });
+    } catch {
+      // Older Safari versions expose Media Session without position-state support.
+    }
+  }, [currentTime, duration]);
+
   const configure = useCallback(({ tracks: nextTracks, autoplay }: ConfigureOptions) => {
     if (autoplay && !initialAutoplayAttempted.current) setMuted(true);
     setTracks((current) => (samePlaylist(current, nextTracks) ? current : nextTracks));
@@ -101,6 +130,63 @@ export function PersistentAudioProvider({ children }: { children: ReactNode }) {
       return next;
     });
   }, []);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator)) return;
+
+    const mediaSession = navigator.mediaSession;
+    const handlers: Array<[MediaSessionAction, MediaSessionActionHandler | null]> = [
+      ["play", () => void audioRef.current?.play()],
+      ["pause", () => audioRef.current?.pause()],
+      ["previoustrack", () => changeTrack(-1, true)],
+      ["nexttrack", () => changeTrack(1, true)],
+      [
+        "seekbackward",
+        (details) => {
+          const audio = audioRef.current;
+          if (audio)
+            audio.currentTime = Math.max(0, audio.currentTime - (details.seekOffset || 10));
+        },
+      ],
+      [
+        "seekforward",
+        (details) => {
+          const audio = audioRef.current;
+          if (audio)
+            audio.currentTime = Math.min(
+              Number.isFinite(audio.duration) ? audio.duration : audio.currentTime + 10,
+              audio.currentTime + (details.seekOffset || 10),
+            );
+        },
+      ],
+      [
+        "seekto",
+        (details) => {
+          if (audioRef.current && details.seekTime != null) {
+            audioRef.current.currentTime = details.seekTime;
+          }
+        },
+      ],
+    ];
+
+    for (const [action, handler] of handlers) {
+      try {
+        mediaSession.setActionHandler(action, handler);
+      } catch {
+        // A browser may expose Media Session while omitting individual actions.
+      }
+    }
+
+    return () => {
+      for (const [action] of handlers) {
+        try {
+          mediaSession.setActionHandler(action, null);
+        } catch {
+          // Ignore unsupported actions during cleanup as well.
+        }
+      }
+    };
+  }, [changeTrack]);
 
   const value = useMemo(
     () => ({
